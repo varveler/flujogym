@@ -1,0 +1,25 @@
+[
+{
+  "model": "usuarios.usuario",
+  "pk": 1,
+  "fields": {
+    "password": "pbkdf2_sha256$870000$rxK1vfJlZOfz2MwF5W9zcY$tAFZbwUizz/jK+Qi9mbshb9mgFWilK7DCpL73UgoRTo=",
+    "last_login": "2025-02-11T02:01:05.603Z",
+    "is_superuser": true,
+    "username": "sebastian",
+    "first_name": "Sebastian",
+    "last_name": "Perez",
+    "email": "sebastian@gmail.com",
+    "is_staff": true,
+    "is_active": true,
+    "date_joined": "2025-02-11T01:41:30.340Z",
+    "fecha_nacimiento": "2025-02-11",
+    "telefono": "",
+    "direccion": "",
+    "fecha_inscripcion": "2025-02-11",
+    "activo": true,
+    "groups": [],
+    "user_permissions": []
+  }
+}
+]

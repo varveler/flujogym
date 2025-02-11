@@ -15,3 +15,6 @@ COPY ./requirements.txt /requirements.txt
 RUN pip install -r /requirements.txt
 
 WORKDIR /flujogym
+
+COPY ./init-web.sh /flujogym/init-web.sh
+RUN chmod +x /flujogym/init-web.sh

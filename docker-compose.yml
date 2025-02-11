@@ -22,7 +22,7 @@ services:
         dockerfile: Dockerfile
       container_name: gym-web
       hostname: gym-web
-      command: sh -c "python3 manage.py collectstatic --noinput && /usr/local/bin/gunicorn flujogym.wsgi:application -w 3 -b :80 --reload --log-level debug --timeout 90"
+      command: sh /flujogym/init-web.sh
       volumes:
         - ./flujogym:/flujogym
         - gym_static_volume:/flujogym/static

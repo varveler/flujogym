@@ -1,0 +1,224 @@
+[
+    {
+        "model": "rutinas.ejercicio",
+        "pk": 1,
+        "fields": {
+            "nombre": "Sentadillas",
+            "descripcion": "Ejercicio básico para piernas",
+            "grupo_muscular": "piernas",
+            "equipamiento_necesario": "Barra y discos (opcional)"
+        }
+    },
+    {
+        "model": "rutinas.ejercicio",
+        "pk": 2,
+        "fields": {
+            "nombre": "Peso Muerto",
+            "descripcion": "Ejercicio compuesto para piernas y espalda baja",
+            "grupo_muscular": "piernas",
+            "equipamiento_necesario": "Barra y discos"
+        }
+    },
+    {
+        "model": "rutinas.ejercicio",
+        "pk": 3,
+        "fields": {
+            "nombre": "Press de Banca",
+            "descripcion": "Ejercicio básico para pecho",
+            "grupo_muscular": "pecho",
+            "equipamiento_necesario": "Banca, barra y discos"
+        }
+    },
+    {
+        "model": "rutinas.ejercicio",
+        "pk": 4,
+        "fields": {
+            "nombre": "Aperturas con Mancuernas",
+            "descripcion": "Ejercicio de aislamiento para pecho",
+            "grupo_muscular": "pecho",
+            "equipamiento_necesario": "Banca y mancuernas"
+        }
+    },
+    {
+        "model": "rutinas.ejercicio",
+        "pk": 5,
+        "fields": {
+            "nombre": "Dominadas",
+            "descripcion": "Ejercicio básico para espalda",
+            "grupo_muscular": "espalda",
+            "equipamiento_necesario": "Barra de dominadas"
+        }
+    },
+    {
+        "model": "rutinas.ejercicio",
+        "pk": 6,
+        "fields": {
+            "nombre": "Remo con Barra",
+            "descripcion": "Ejercicio para espalda media",
+            "grupo_muscular": "espalda",
+            "equipamiento_necesario": "Barra y discos"
+        }
+    },
+    {
+        "model": "rutinas.ejercicio",
+        "pk": 7,
+        "fields": {
+            "nombre": "Press Militar",
+            "descripcion": "Ejercicio básico para hombros",
+            "grupo_muscular": "hombros",
+            "equipamiento_necesario": "Barra y discos"
+        }
+    },
+    {
+        "model": "rutinas.ejercicio",
+        "pk": 8,
+        "fields": {
+            "nombre": "Elevaciones Laterales",
+            "descripcion": "Ejercicio de aislamiento para hombros",
+            "grupo_muscular": "hombros",
+            "equipamiento_necesario": "Mancuernas"
+        }
+    },
+    {
+        "model": "rutinas.ejercicio",
+        "pk": 9,
+        "fields": {
+            "nombre": "Curl de Bíceps",
+            "descripcion": "Ejercicio básico para bíceps",
+            "grupo_muscular": "brazos",
+            "equipamiento_necesario": "Barra o mancuernas"
+        }
+    },
+    {
+        "model": "rutinas.ejercicio",
+        "pk": 10,
+        "fields": {
+            "nombre": "Extensión de Tríceps",
+            "descripcion": "Ejercicio básico para tríceps",
+            "grupo_muscular": "brazos",
+            "equipamiento_necesario": "Mancuerna o polea"
+        }
+    },
+    {
+        "model": "rutinas.ejercicio",
+        "pk": 11,
+        "fields": {
+            "nombre": "Plancha",
+            "descripcion": "Ejercicio isométrico para abdomen",
+            "grupo_muscular": "abdominales",
+            "equipamiento_necesario": "Ninguno"
+        }
+    },
+    {
+        "model": "rutinas.ejercicio",
+        "pk": 12,
+        "fields": {
+            "nombre": "Crunch",
+            "descripcion": "Ejercicio básico para abdomen",
+            "grupo_muscular": "abdominales",
+            "equipamiento_necesario": "Colchoneta (opcional)"
+        }
+    },
+    {
+        "model": "rutinas.ejercicio",
+        "pk": 13,
+        "fields": {
+            "nombre": "Burpees",
+            "descripcion": "Ejercicio cardiovascular full body",
+            "grupo_muscular": "fullbody",
+            "equipamiento_necesario": "Ninguno"
+        }
+    },
+    {
+        "model": "rutinas.ejercicio",
+        "pk": 14,
+        "fields": {
+            "nombre": "Mountain Climbers",
+            "descripcion": "Ejercicio funcional full body",
+            "grupo_muscular": "fullbody",
+            "equipamiento_necesario": "Ninguno"
+        }
+    },
+    {
+        "model": "rutinas.rutina",
+        "pk": 1,
+        "fields": {
+            "nombre": "Rutina de Pecho",
+            "descripcion": "Rutina enfocada en pecho con ejercicios complementarios",
+            "nivel_dificultad": "intermedio",
+            "duracion_estimada": 60,
+            "creada_por": 1,
+            "fecha_creacion": "2025-02-11T02:30:00Z"
+        }
+    },
+    {
+        "model": "rutinas.ejercicioenrutina",
+        "pk": 1,
+        "fields": {
+            "rutina": 1,
+            "ejercicio": 3,
+            "orden": 1,
+            "series": 4,
+            "repeticiones": "12",
+            "descanso": 90
+        }
+    },
+    {
+        "model": "rutinas.ejercicioenrutina",
+        "pk": 2,
+        "fields": {
+            "rutina": 1,
+            "ejercicio": 9,
+            "orden": 2,
+            "series": 3,
+            "repeticiones": "15",
+            "descanso": 60
+        }
+    },
+    {
+        "model": "rutinas.ejercicioenrutina",
+        "pk": 3,
+        "fields": {
+            "rutina": 1,
+            "ejercicio": 5,
+            "orden": 3,
+            "series": 3,
+            "repeticiones": "10",
+            "descanso": 90
+        }
+    },
+    {
+        "model": "rutinas.ejercicioenrutina",
+        "pk": 4,
+        "fields": {
+            "rutina": 1,
+            "ejercicio": 4,
+            "orden": 4,
+            "series": 3,
+            "repeticiones": "12",
+            "descanso": 60
+        }
+    },
+    {
+        "model": "rutinas.programacionrutina",
+        "pk": 1,
+        "fields": {
+            "usuario": 1,
+            "rutina": 1,
+            "dia_semana": "LUN",
+            "hora": "18:00:00",
+            "activa": true
+        }
+    },
+    {
+        "model": "rutinas.programacionrutina",
+        "pk": 2,
+        "fields": {
+            "usuario": 1,
+            "rutina": 1,
+            "dia_semana": "VIE",
+            "hora": "18:00:00",
+            "activa": true
+        }
+    }
+]
