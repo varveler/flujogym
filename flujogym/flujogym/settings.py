@@ -11,21 +11,33 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 """
 
 from pathlib import Path
+import os
+from django.core.exceptions import ImproperlyConfigured
+from kombu import Exchange, Queue
+from datetime import timedelta
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
+MAIN_DIR = BASE_DIR.parent
+
+def get_env_variable(var_name):
+    """ Get the environment variable or return exception """
+    try:
+        return os.environ[var_name]
+    except KeyError:
+        error_msg = "Set the %s environment variable" % var_name
+        raise ImproperlyConfigured(error_msg)
 
 
-# Quick-start development settings - unsuitable for production
-# See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
+
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-j$cw&r8+dog1_h1v7gfop(j-sullwibqhy5(&apzxe4q75guy3'
+SECRET_KEY = get_env_variable('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['0.0.0.0', 'localhost']
 
 
 # Application definition
@@ -38,7 +50,10 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'rest_framework',
+    'celery',
+    'django_celery_beat',
     'usuarios',
+    'rutinas',
 ]
 
 MIDDLEWARE = [
@@ -72,13 +87,20 @@ TEMPLATES = [
 WSGI_APPLICATION = 'flujogym.wsgi.application'
 
 
-# Database
-# https://docs.djangoproject.com/en/5.1/ref/settings/#databases
+SECRET_DB_NAME = get_env_variable('SECRET_DB_NAME')
+SECRET_DB_USER = get_env_variable('SECRET_DB_USER')
+SECRET_DB_PASSWORD = get_env_variable('SECRET_DB_PASSWORD')
+DB_HOST = get_env_variable('SECRET_DB_HOST')
+DB_PORT = get_env_variable('SECRET_DB_PORT')
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': SECRET_DB_NAME,
+        'USER': SECRET_DB_USER,
+        'PASSWORD': SECRET_DB_PASSWORD,
+        'HOST': DB_HOST,
+        'PORT': DB_PORT,
     }
 }
 
@@ -117,7 +139,9 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.1/howto/static-files/
 
+
 STATIC_URL = 'static/'
+STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
@@ -140,3 +164,51 @@ REST_FRAMEWORK = {
     #     'rest_framework_simplejwt.authentication.JWTAuthentication',
     # ],
 }
+
+
+RABBIT_HOSTNAME = get_env_variable('RABBIT_HOSTNAME')
+RABBIT_ENV_USER= get_env_variable('RABBIT_ENV_USER')
+RABBIT_ENV_RABBITMQ_PASS = get_env_variable('RABBIT_ENV_RABBITMQ_PASS')
+RABBIT_ENV_VHOST = get_env_variable('RABBIT_ENV_VHOST')
+BROKER_URL = f'amqp://{RABBIT_ENV_USER}:{RABBIT_ENV_RABBITMQ_PASS}@{RABBIT_HOSTNAME}/{RABBIT_ENV_VHOST}'
+
+
+BROKER_HEARTBEAT = '?heartbeat=0'
+if not BROKER_URL.endswith(BROKER_HEARTBEAT):
+    BROKER_URL += BROKER_HEARTBEAT
+BROKER_POOL_LIMIT = 1
+BROKER_CONNECTION_TIMEOUT = 10
+
+# Redis Celery results backend
+REDIS_PORT = 6379
+REDIS_DB = 0
+REDIS_HOST = 'redis'
+
+# Celery configuration
+CELERY_ENABLE_UTC = True
+CELERY_TIMEZONE = 'UTC'
+CELERY_DEFAULT_QUEUE = 'default'
+CELERY_QUEUES = (
+    Queue('default', Exchange('default'), routing_key='default'),
+)
+CELERY_ALWAYS_EAGER = False
+CELERY_ACKS_LATE = True
+CELERY_TASK_PUBLISH_RETRY = True
+CELERY_DISABLE_RATE_LIMITS = False
+CELERY_IGNORE_RESULT = False
+CELERY_SEND_TASK_ERROR_EMAILS = False
+CELERY_TASK_RESULT_EXPIRES = 600
+CELERY_RESULT_BACKEND = 'redis://%s:%d/%d' % (REDIS_HOST, REDIS_PORT, REDIS_DB)
+CELERY_REDIS_MAX_CONNECTIONS = 1
+CELERY_TASK_SERIALIZER = "json"
+CELERY_ACCEPT_CONTENT = ['application/json']
+CELERYD_HIJACK_ROOT_LOGGER = False
+CELERYD_PREFETCH_MULTIPLIER = 1
+CELERYD_MAX_TASKS_PER_CHILD = 1000
+
+CELERY_IMPORTS = (
+    #'usuarios.tasks',
+    #'rutinas.tasks',
+)
+
+#ASGI_APPLICATION = 'flujogym.asgi.application'

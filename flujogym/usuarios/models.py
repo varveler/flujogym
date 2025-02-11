@@ -11,4 +11,4 @@ class Usuario(AbstractUser):
     activo = models.BooleanField('¿Usuario activo?', default=True)
 
     def __str__(self):
-        return f"{self.get_full_name()} - {"Activo" if self.esta_activo else "Inactivo"}"
+        return f"{self.get_full_name()} - {'Activo' if self.esta_activo else 'Inactivo'}"

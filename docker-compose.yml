@@ -1,0 +1,134 @@
+services:
+    db:
+        image: postgres:16.0
+        container_name: gym-db
+        hostname: gym-db
+        env_file: ./docker/db/.env
+        ports:
+          - "5432:5432"
+        volumes:
+            - gym_db_data:/var/lib/postgresql/
+        healthcheck:
+          test: [ "CMD", "pg_isready", "-q", "-d", "flujogym", "-U", "gymadmin" ]
+          interval: 8s
+          timeout: 5s
+          retries: 7
+        networks:
+            - gym-network
+
+    web:
+      build:
+        context: flujogym/
+        dockerfile: Dockerfile
+      container_name: gym-web
+      hostname: gym-web
+      command: sh -c "python3 manage.py collectstatic --noinput && /usr/local/bin/gunicorn flujogym.wsgi:application -w 3 -b :80 --reload --log-level debug --timeout 90"
+      volumes:
+        - ./flujogym:/flujogym
+        - gym_static_volume:/flujogym/static
+      env_file: flujogym/.env
+      depends_on:
+        db:
+          condition: service_healthy
+      links:
+        - db
+        - redis
+        - rabbit
+      networks:
+        - gym-network
+
+    nginx:
+      build: ./docker/nginx/
+      container_name: gym-nginx
+      hostname: gym-nginx
+      command: "/bin/sh -c 'while :; do sleep 6h & wait $${!}; nginx -s reload; done & nginx -g \"daemon off;\"'"
+      ports:
+        - "80:80"
+      volumes:
+        - gym_static_volume:/flujogym/static
+        - ./docker/nginx/conf:/etc/nginx/conf.d/
+      links:
+        - web:web
+      networks:
+        - gym-network
+
+    redis:
+      image: redis:alpine
+      container_name: gym-redis
+      hostname: gym-redis
+      ports:
+        - "6379:6379"
+      networks:
+        - gym-network
+
+    rabbit:
+      image: rabbitmq:latest
+      hostname: rabbitmq
+      env_file: docker/rabbitmq/.env
+      ports:
+        - "5672:5672"  # for debugging
+        - "15672:15672"
+      healthcheck:
+        test: rabbitmq-diagnostics -q ping
+        interval: 15s
+        timeout: 10s
+        retries: 7
+      networks:
+        - gym-network
+
+    celery:
+        build:
+          context: flujogym/
+          dockerfile: Dockerfile
+        command: celery -A flujogym worker -l info
+        container_name: gym-celery
+        hostname: gym-celery
+        volumes:
+          - ./flujogym:/flujogym
+        links:
+          - db
+          - rabbit
+          - redis
+        env_file: flujogym/.env
+        environment:
+          - LC_ALL=C.UTF-8
+          - LANG=C.UTF-8
+        depends_on:
+          rabbit:
+            condition: service_healthy
+          db:
+            condition: service_healthy
+        networks:
+          - gym-network
+
+    beat:
+        build:
+          context: flujogym/
+          dockerfile: Dockerfile
+        command: [ "celery", "-A", "flujogym", "beat", "-l", "info", "-S", "django" ]
+        container_name: gym-beat
+        hostname: gym-beat
+        volumes:
+          - ./flujogym:/flujogym
+        links:
+          - db
+          - rabbit
+        env_file: flujogym/.env
+        environment:
+          - LC_ALL=C.UTF-8
+          - LANG=C.UTF-8
+        depends_on:
+          db:
+            condition: service_healthy
+          rabbit:
+            condition: service_healthy
+        networks:
+          - gym-network
+
+volumes:
+    gym_db_data:
+    gym_static_volume:
+
+networks:
+    gym-network:
+        driver: bridge
