@@ -165,6 +165,8 @@ curl -X GET http://localhost/api/programaciones/ \
   -H "Authorization: Bearer TU_TOKEN_AQUI"
 ```
 
+
+
 Creacion de rutinas y ejercicios
 ```bash
 curl -X POST http://localhost/api/rutinas/ \
@@ -177,7 +179,31 @@ curl -X POST http://localhost/api/rutinas/ \
     "duracion_estimada": 20
   }'
 ```
+y luego podemos agregar ejercicios a la rutina
+
+Nota: Reemplaza el id de la rutina que se obtiene en el paso anterior
+```bash
+curl -X POST http://localhost/api/rutinas/4/agregar_ejercicio/ \
+  -H "Authorization: Bearer TU_TOKEN_AQUI" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "ejercicio_id": 3,
+    "orden": 1,
+    "series": 5,
+    "repeticiones": "Hasta el fallo",
+    "descanso": 120
+  }'
+```
+
+Obtener rutinas de un usuario específico
+```bash
+curl -X GET "http://localhost/api/rutinas/by_user/?user_id=1" \
+  -H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzM5MzMzMjMzLCJpYXQiOjE3MzkyNDY4MzMsImp0aSI6ImIyOTU1YjcyYmU2NTRmZDU5Y2Q3NDQ5NGJlOTA2NzM0IiwidXNlcl9pZCI6MX0.SkD6IBzcUDPQtpL8M-lqvNSBG4m6JElvxA_NzXOSeh4"
+```
+
 Probemos borrar la rutina creada
+
+Nota: Reemplaza el id de la rutina que se obtiene en el paso anterior
 
 ```bash
 curl -X DELETE http://localhost/api/rutinas/4/ \
@@ -233,7 +259,7 @@ flujogym/
 - `POST /api/rutinas/{id}/agregar_ejercicio/` - Agregar ejercicio a una rutina
 - `GET /api/rutinas/{id}/ejercicios/` - Obtener ejercicios de una rutina
 - `DELETE /api/rutinas/{id}/eliminar_ejercicio/` - Eliminar ejercicio de una rutina
-
+- `GET /api/rutinas/by_user/?user_id={id}` - Obtener todas las rutinas de un usuario específico
 
 ### Ejercicios
 - `GET /api/ejercicios/` - Listar ejercicios
@@ -241,8 +267,12 @@ flujogym/
 - `GET /api/ejercicios/{id}/` - Detalle de ejercicio
 
 ### Programaciones
-- `GET /api/programaciones/` - Listar programaciones
+- `GET /api/programaciones/` - Listar programaciones del usuario
 - `POST /api/programaciones/` - Crear programación
+- `GET /api/programaciones/{id}/` - Ver detalle de programación
+- `PUT /api/programaciones/{id}/` - Actualizar programación completa
+- `PATCH /api/programaciones/{id}/` - Actualizar programación parcialmente
+- `DELETE /api/programaciones/{id}/` - Eliminar programación
 
 ## Modelos de Datos
 

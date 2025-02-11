@@ -3,8 +3,12 @@ from rest_framework.decorators import action
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
 from django.shortcuts import get_object_or_404
-from .models import Ejercicio, Rutina, EjercicioEnRutina
-from .serializers import EjercicioSerializer, RutinaSerializer, EjercicioEnRutinaSerializer
+from usuarios.models import Usuario
+from .models import Ejercicio, Rutina, EjercicioEnRutina, ProgramacionRutina
+from .serializers import (EjercicioSerializer,
+                          RutinaSerializer,
+                          EjercicioEnRutinaSerializer,
+                          ProgramacionRutinaSerializer)
 
 class EjercicioViewSet(viewsets.ModelViewSet):
     queryset = Ejercicio.objects.all()
@@ -27,6 +31,29 @@ class RutinaViewSet(viewsets.ModelViewSet):
     def perform_create(self, serializer):
         """Asignar el usuario autenticado como creador de la rutina"""
         serializer.save(creada_por=self.request.user)
+
+    @action(detail=False, methods=['get'])
+    def by_user(self, request):
+        """
+        Obtener todas las rutinas de un usuario específico
+        GET /api/rutinas/by_user/?user_id=1
+        """
+        user_id = request.query_params.get('user_id')
+        if not user_id:
+            return Response(
+                {'error': 'Se requiere el parámetro user_id'},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+
+        usuario = get_object_or_404(Usuario, id=user_id)
+
+        rutinas = self.queryset.filter(creada_por=usuario).prefetch_related(
+            'ejercicios',
+            'ejercicios__ejercicio'
+        )
+
+        serializer = self.get_serializer(rutinas, many=True)
+        return Response(serializer.data)
 
     @action(detail=True, methods=['post'])
     def agregar_ejercicio(self, request, pk=None):
@@ -95,3 +122,40 @@ class RutinaViewSet(viewsets.ModelViewSet):
         ejercicio_en_rutina.delete()
 
         return Response(status=status.HTTP_204_NO_CONTENT)
+
+
+class ProgramacionRutinaViewSet(viewsets.ModelViewSet):
+    """
+    ViewSet para operaciones CRUD en ProgramacionRutina.
+    """
+    queryset = ProgramacionRutina.objects.all()
+    serializer_class = ProgramacionRutinaSerializer
+    permission_classes = [IsAuthenticated]
+
+    def get_queryset(self):
+        """Filtrar programaciones por usuario autenticado"""
+        return self.queryset.filter(usuario=self.request.user)
+
+    def perform_create(self, serializer):
+        """Asignar el usuario autenticado al crear una programación"""
+        serializer.save(usuario=self.request.user)
+
+    def update(self, request, *args, **kwargs):
+        """Actualizar programación verificando propiedad"""
+        instance = self.get_object()
+        if instance.usuario != request.user:
+            return Response(
+                {'error': 'No tienes permiso para modificar esta programación'},
+                status=status.HTTP_403_FORBIDDEN
+            )
+        return super().update(request, *args, **kwargs)
+
+    def destroy(self, request, *args, **kwargs):
+        """Eliminar programación verificando propiedad"""
+        instance = self.get_object()
+        if instance.usuario != request.user:
+            return Response(
+                {'error': 'No tienes permiso para eliminar esta programación'},
+                status=status.HTTP_403_FORBIDDEN
+            )
+        return super().destroy(request, *args, **kwargs)

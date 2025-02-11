@@ -19,7 +19,7 @@ from django.urls import path, include
 from rest_framework.routers import DefaultRouter
 from usuarios.views import UsuarioViewSet
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView, TokenVerifyView
-from rutinas.views import (RutinaViewSet, EjercicioViewSet, EjercicioEnRutinaViewSet)
+from rutinas.views import RutinaViewSet, EjercicioViewSet, EjercicioEnRutinaViewSet, ProgramacionRutinaViewSet
 
 router = DefaultRouter()
 
@@ -27,6 +27,8 @@ router.register(r'usuarios', UsuarioViewSet)
 router.register(r'rutinas', RutinaViewSet)
 router.register(r'ejercicios', EjercicioViewSet)
 router.register(r'ejercicios-en-rutina', EjercicioEnRutinaViewSet)
+router.register(r'programaciones', ProgramacionRutinaViewSet)
+
 
 urlpatterns = [
     path('admin/', admin.site.urls),

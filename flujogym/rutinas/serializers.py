@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Ejercicio, Rutina, EjercicioEnRutina
+from .models import Ejercicio, Rutina, EjercicioEnRutina, ProgramacionRutina
 
 
 class EjercicioSerializer(serializers.ModelSerializer):
@@ -47,3 +47,16 @@ class RutinaSerializer(serializers.ModelSerializer):
             # Tiempo total del ejercicio considerando descanso
             total_seconds += (tiempo_por_serie + ejercicio.descanso) * ejercicio.series
         return total_seconds // 60
+
+
+class ProgramacionRutinaSerializer(serializers.ModelSerializer):
+    rutina_nombre = serializers.CharField(source='rutina.nombre', read_only=True)
+    dia_semana_display = serializers.CharField(source='get_dia_semana_display', read_only=True)
+
+    class Meta:
+        model = ProgramacionRutina
+        fields = (
+            'id', 'usuario', 'rutina', 'rutina_nombre',
+            'dia_semana', 'dia_semana_display', 'hora', 'activa'
+        )
+        read_only_fields = ('usuario',)
