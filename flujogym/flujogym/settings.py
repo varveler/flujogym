@@ -55,6 +55,7 @@ INSTALLED_APPS = [
     'usuarios',
     'rutinas',
     'rest_framework_simplejwt',
+    'entrenamientos',
 ]
 
 MIDDLEWARE = [
