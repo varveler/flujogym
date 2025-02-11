@@ -165,8 +165,24 @@ curl -X GET http://localhost/api/programaciones/ \
   -H "Authorization: Bearer TU_TOKEN_AQUI"
 ```
 
+Creacion de rutinas y ejercicios
+```bash
+curl -X POST http://localhost/api/rutinas/ \
+  -H "Authorization: Bearer TU_TOKEN_AQUI" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "nombre": "Rutina de Pecho a falla mortal",
+    "descripcion": "Rutina de puro en pecho 20 minutos",
+    "nivel_dificultad": "intermedio",
+    "duracion_estimada": 20
+  }'
+```
+Probemos borrar la rutina creada
 
-
+```bash
+curl -X DELETE http://localhost/api/rutinas/4/ \
+  -H "Authorization: Bearer TU_TOKEN_AQUI"
+ ```
 
 
 
@@ -214,6 +230,10 @@ flujogym/
 - `GET /api/rutinas/{id}/` - Detalle de rutina
 - `PUT /api/rutinas/{id}/` - Actualizar rutina
 - `DELETE /api/rutinas/{id}/` - Eliminar rutina
+- `POST /api/rutinas/{id}/agregar_ejercicio/` - Agregar ejercicio a una rutina
+- `GET /api/rutinas/{id}/ejercicios/` - Obtener ejercicios de una rutina
+- `DELETE /api/rutinas/{id}/eliminar_ejercicio/` - Eliminar ejercicio de una rutina
+
 
 ### Ejercicios
 - `GET /api/ejercicios/` - Listar ejercicios
