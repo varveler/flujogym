@@ -46,10 +46,9 @@ docker-compose up --build
 - Contraseña: flujogym
 
 ## Ejemplos de Uso de la API
-
-A continuación, se muestra un ejemplo completo de cómo usar la API para crear y programar una rutina de ejercicios.
-
-
+Se incluye colección de POSTMAN para probar la API.
+ó si prefiere con comandos curl
+a continuación, se muestra un ejemplo completo de cómo usar la API para crear y programar una rutina de ejercicios.
 
 
 
@@ -226,14 +225,14 @@ Obtener registros de entrenamiento:
 
 ```bash
 curl -X GET http://localhost/api/entrenamientos/ \
-  -H "Authorization: Bearer TU_TOKEN"
+  -H "Authorization: Bearer TU_TOKEN_AQUI"
 ```
 
 Obtener registros de entrenamiento por usuario:
 
 ```bash
 curl -X GET http://localhost/api/entrenamientos/ \
-  -H "Authorization: Bearer TU_TOKEN"
+  -H "Authorization: Bearer TU_TOKEN_AQUI"
 ```
 
 Para obtener estadisticas mensuales de un usuario en particular:
@@ -241,7 +240,7 @@ Para obtener estadisticas mensuales de un usuario en particular:
 ```bash
 curl -X GET \
   'http://localhost/api/entrenamientos/statistics/?period=mes&user_id=1' \
-  -H 'Authorization: Bearer YOUR_ACCESS_TOKEN'
+  -H 'Authorization: Bearer TU_TOKEN_AQUI'
 ```
 
 ## Estructura del Proyecto
@@ -263,6 +262,7 @@ flujogym/
 │   │   ├── celery.py
 │   │   └── wsgi.py
 │   ├── usuarios/
+│   ├── entrenamientos/
 │   └── rutinas/
 │
 ├── docker-compose.yml

@@ -576,6 +576,42 @@
 						}
 					},
 					"response": []
+				},
+				{
+					"name": "Filtrat por Periodo",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/entrenamientos/estadisticas/?period=mes&user_id=1",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"entrenamientos",
+								"estadisticas",
+								""
+							],
+							"query": [
+								{
+									"key": "period",
+									"value": "mes"
+								},
+								{
+									"key": "user_id",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
 				}
 			]
 		}
