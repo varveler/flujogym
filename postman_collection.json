@@ -1,0 +1,595 @@
+{
+	"info": {
+		"_postman_id": "5b799acb-9070-48df-b2b8-d9f1c6192948",
+		"name": "FlujoGym API",
+		"description": "Colección de endpoints para la API de FlujoGym",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "9498556",
+		"_collection_link": "https://www.postman.com/grey-space-652392/flujogym/collection/2iphiix/flujogym-api?action=share&source=collection_link&creator=9498556"
+	},
+	"item": [
+		{
+			"name": "Auth",
+			"item": [
+				{
+					"name": "Obtener Token",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);",
+									"pm.collectionVariables.set(\"token\", jsonData.access);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"username\": \"sebastian\",\n    \"password\": \"tu_password\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/token/",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"token",
+								""
+							]
+						},
+						"description": "Obtener token JWT para autenticación"
+					},
+					"response": []
+				},
+				{
+					"name": "Refrescar Token",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"refresh\": \"refresh token AQUI\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/token/refresh/",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"token",
+								"refresh",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Verificar Token",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"token\": \"{{token}}\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/token/verify/",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"token",
+								"verify",
+								""
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Rutinas",
+			"item": [
+				{
+					"name": "Crear Rutina",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"nombre\": \"Rutina de Pecho a falla mortal\",\n    \"descripcion\": \"Rutina de puro en pecho 20 minutos\",\n    \"nivel_dificultad\": \"intermedio\",\n    \"duracion_estimada\": 20\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/rutinas/",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"rutinas",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Listar Rutinas",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/rutinas/",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"rutinas",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Detalle Rutina",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/rutinas/1/",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"rutinas",
+								"1",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Agregar Ejercicio a Rutina",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"ejercicio_id\": 3,\n    \"orden\": 1,\n    \"series\": 5,\n    \"repeticiones\": \"Hasta el fallo\",\n    \"descanso\": 120\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/rutinas/1/agregar_ejercicio/",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"rutinas",
+								"1",
+								"agregar_ejercicio",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Obtener Rutinas de Usuario",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/rutinas/by_user/?user_id=1",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"rutinas",
+								"by_user",
+								""
+							],
+							"query": [
+								{
+									"key": "user_id",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Eliminar Rutina",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/rutinas/1/",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"rutinas",
+								"1",
+								""
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Programaciones",
+			"item": [
+				{
+					"name": "Crear Programación",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"rutina\": 1,\n    \"dia_semana\": \"LUN\",\n    \"hora\": \"18:00:00\",\n    \"activa\": true\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/programaciones/",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"programaciones",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Listar Programaciones",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/programaciones/",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"programaciones",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Detalle Programación",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/programaciones/1/",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"programaciones",
+								"1",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Actualizar Programación",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"rutina\": 1,\n    \"dia_semana\": \"MAR\",\n    \"hora\": \"19:00:00\",\n    \"activa\": true\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/programaciones/1/",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"programaciones",
+								"1",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Actualizar Parcial Programación",
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"hora\": \"20:00:00\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/programaciones/1/",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"programaciones",
+								"1",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Eliminar Programación",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/programaciones/1/",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"programaciones",
+								"1",
+								""
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Ejercicios",
+			"item": [
+				{
+					"name": "Listar Ejercicios",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/ejercicios/",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"ejercicios",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Detalle Ejercicio",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/ejercicios/1/",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"ejercicios",
+								"1",
+								""
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "entrenamientos",
+			"item": [
+				{
+					"name": "Listar Entrenamientos",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/entrenamientos/",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"entrenamientos",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Obtener Entrenamientos de Usuario",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/entrenamientos/by_user/?user_id=1",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"entrenamientos",
+								"by_user",
+								""
+							],
+							"query": [
+								{
+									"key": "user_id",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"variable": [
+		{
+			"key": "base_url",
+			"value": "http://localhost",
+			"type": "string"
+		},
+		{
+			"key": "token",
+			"value": "your_token_here",
+			"type": "string"
+		}
+	]
+}
