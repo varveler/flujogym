@@ -20,6 +20,7 @@ from rest_framework.routers import DefaultRouter
 from usuarios.views import UsuarioViewSet
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView, TokenVerifyView
 from rutinas.views import RutinaViewSet, EjercicioViewSet, EjercicioEnRutinaViewSet, ProgramacionRutinaViewSet
+from entrenamientos.views import RegistroEntrenamientoViewSet
 
 router = DefaultRouter()
 
@@ -28,7 +29,7 @@ router.register(r'rutinas', RutinaViewSet)
 router.register(r'ejercicios', EjercicioViewSet)
 router.register(r'ejercicios-en-rutina', EjercicioEnRutinaViewSet)
 router.register(r'programaciones', ProgramacionRutinaViewSet)
-
+router.register(r'entrenamientos', RegistroEntrenamientoViewSet)
 
 urlpatterns = [
     path('admin/', admin.site.urls),

@@ -210,7 +210,39 @@ curl -X DELETE http://localhost/api/rutinas/4/ \
   -H "Authorization: Bearer TU_TOKEN_AQUI"
  ```
 
+Creemos un registro de entrenamiento
 
+```bash
+curl -X POST http://localhost/api/entrenamientos/ \
+  -H "Authorization: Bearer TU_TOKEN_AQUI" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "rutina": 1,
+    "completado": true
+  }'
+```
+
+Obtener registros de entrenamiento:
+
+```bash
+curl -X GET http://localhost/api/entrenamientos/ \
+  -H "Authorization: Bearer TU_TOKEN"
+```
+
+Obtener registros de entrenamiento por usuario:
+
+```bash
+curl -X GET http://localhost/api/entrenamientos/ \
+  -H "Authorization: Bearer TU_TOKEN"
+```
+
+Para obtener estadisticas mensuales de un usuario en particular:
+
+```bash
+curl -X GET \
+  'http://localhost/api/entrenamientos/statistics/?period=mes&user_id=1' \
+  -H 'Authorization: Bearer YOUR_ACCESS_TOKEN'
+```
 
 ## Estructura del Proyecto
 
@@ -273,6 +305,10 @@ flujogym/
 - `PUT /api/programaciones/{id}/` - Actualizar programación completa
 - `PATCH /api/programaciones/{id}/` - Actualizar programación parcialmente
 - `DELETE /api/programaciones/{id}/` - Eliminar programación
+- `GET /api/entrenamientos/estadisticas/` - Obtener estadísticas de entrenamientos
+  - Parámetros opcionales:
+    - `period`: Período de estadísticas ('day', 'week', 'month', 'year')
+    - `user_id`: ID de usuario específico
 
 ## Modelos de Datos
 
@@ -303,4 +339,5 @@ flujogym/
 - dia_semana
 - hora
 - activa
+
 
