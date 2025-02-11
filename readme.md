@@ -305,6 +305,15 @@ flujogym/
 - `PUT /api/programaciones/{id}/` - Actualizar programación completa
 - `PATCH /api/programaciones/{id}/` - Actualizar programación parcialmente
 - `DELETE /api/programaciones/{id}/` - Eliminar programación
+
+### Entrenamientos
+- `GET /api/entrenamientos/` - Listar registros de entrenamiento
+- `POST /api/entrenamientos/` - Crear registro de entrenamiento
+- `GET /api/entrenamientos/{id}/` - Ver detalle de registro
+- `PUT /api/entrenamientos/{id}/` - Actualizar registro completo
+- `PATCH /api/entrenamientos/{id}/` - Actualizar registro parcialmente
+- `DELETE /api/entrenamientos/{id}/` - Eliminar registro
+- `GET /api/entrenamientos/by_user/?user_id={id}` - Obtener entrenamientos de un usuario específico
 - `GET /api/entrenamientos/estadisticas/` - Obtener estadísticas de entrenamientos
   - Parámetros opcionales:
     - `period`: Período de estadísticas ('day', 'week', 'month', 'year')
