@@ -28,6 +28,8 @@ Herramienta para que los usuarios puedan registrar y gestionar sus rutinas de ej
 
 ## Instalación y Despliegue
 
+Nota: por simplicidad se trackearon archivos .env en el repositorio, en un entorno de producción no se debería hacer esto.
+
 1. Clonar el repositorio:
 ```bash
 git clone git@github.com:varveler/flujogym.git
